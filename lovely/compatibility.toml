@@ -3,48 +3,6 @@ version = "1.0.0"
 dump_lua = true
 priority = 1
 
-#Patch SMODS ante_end to use upcoming functionality for compat
-[[patches]]
-[patches.pattern]
-target = 'functions/state_events.lua'
-pattern = '''
-delay(0.4); ease_ante(1, true); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
-'''
-position = 'at'
-payload = '''
-delay(0.4); SMODS.ante_end = true; ease_ante(1); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
-'''
-match_indent = true
-times = 1
-
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS _ "src/overrides.lua"]'''
-pattern = '''
-function ease_ante(mod, ante_end)
-    local flags = SMODS.calculate_context({modify_ante = mod, ante_end = ante_end})
-'''
-position = 'at'
-payload = '''
-function ease_ante(mod)
-	local flags = SMODS.calculate_context({modify_ante = mod, ante_end = SMODS.ante_end})
-'''
-match_indent = true
-times = 1
-
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS _ "src/overrides.lua"]'''
-pattern = '''
-SMODS.calculate_context({ante_change = mod, ante_end = ante_end})
-'''
-position = 'at'
-payload = '''
-SMODS.calculate_context({ante_change = mod, ante_end = SMODS.ante_end})
-'''
-match_indent = true
-times = 1
-
 # Ortalab Compat
 [[patches]] # Small and Big Blind pool manipulation
 [patches.pattern]
