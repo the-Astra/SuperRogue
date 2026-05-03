@@ -14,5 +14,6 @@
 	"dependencies": [
 		"Steamodded (>=1.0.0~BETA-1016c)",
 		"Lovely (>=0.7.1)"
-	]
+	],
+	"allow_redistribution": true
 }
