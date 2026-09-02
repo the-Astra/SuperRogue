@@ -89,7 +89,7 @@ SMODS.Booster {
         ease_background_colour({ new_colour = HEX('ffad66'), special_colour = G.C.BLACK, contrast = 2 })
     end,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.config.center.config.choose, card.ability.extra } }
+        return { vars = { card.ability.choose, card.ability.extra } }
     end,
     in_pool = function(self, args)
         if G.GAME.sr_boosters_in_shop and SuperRogue.get_total_inactive() > 1 then
