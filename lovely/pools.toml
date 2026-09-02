@@ -3,10 +3,10 @@ version = "1.0.0"
 dump_lua = true
 priority = 1
 
-# Prevent boss blinds from disabled mods from spawning (Doesn't use get_current_pool hook)
+# Prevent blinds from disabled mods from spawning (Doesn't use get_current_pool hook)
 [[patches]]
 [patches.pattern]
-target = 'functions/common_events.lua'
+target = '''=[SMODS _ "src/utils/weights.lua"]'''
 pattern = '''
 for k, v in pairs(G.GAME.banned_keys) do
     if eligible_bosses[k] then eligible_bosses[k] = nil end
