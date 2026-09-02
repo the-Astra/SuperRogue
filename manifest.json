@@ -1,0 +1,8 @@
+{
+	"name": "SuperRogue",
+	"description": "SuperRogue is a mod designed to add another Rogue-like layer to Balatro",
+	"version_number": "1.2.4",
+	"dependencies": [
+		"Steamodded-Steamodded-26.829.0"
+	]
+}

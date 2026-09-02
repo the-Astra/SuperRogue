@@ -9,10 +9,10 @@
 	"priority": 9999,
 	"badge_colour": "d90e00",
 	"badge_text_colour": "#ffad66",
-	"version": "1.2.3b",
+	"version": "1.2.4",
 	"git_owner": "the-Astra",
 	"dependencies": [
-		"Steamodded (>=1.0.0~BETA-1016c)",
+		"Steamodded (>=26.829.0)",
 		"Lovely (>=0.7.1)"
 	],
 	"allow_redistribution": true
