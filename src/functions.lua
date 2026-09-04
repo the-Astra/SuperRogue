@@ -154,11 +154,17 @@ end
 
 --Helper function to check if a mod has tangible content
 function SuperRogue.does_mod_have_content(id)
+    local pool_blacklist = {
+        ['Sleeve'] = true,
+        ['Back'] = true
+    }
 
     for pool, _ in pairs(G.P_CENTER_POOLS) do
-        for _, v in pairs(G.P_CENTER_POOLS[pool]) do
-            if v.mod and v.mod.id == id and not v.no_collection then
-                return true
+        if not pool_blacklist[pool] then
+            for _, v in pairs(G.P_CENTER_POOLS[pool]) do
+                if v.mod and v.mod.id == id and not v.no_collection then
+                    return true
+                end
             end
         end
     end
