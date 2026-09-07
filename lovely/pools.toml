@@ -63,6 +63,19 @@ elseif not SuperRogue.is_object_mod_active(v, {type = 'Booster'}) then
 match_indent = true
 times = 1
 
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''
+if sticker.should_apply and type(sticker.should_apply) == 'function' and sticker:should_apply(card, center, area) then
+'''
+position = 'at'
+payload = '''
+if sticker.should_apply and type(sticker.should_apply) == 'function' and sticker:should_apply(card, center, area) and SuperRogue.is_object_mod_active(sticker) then
+'''
+match_indent = true
+times = 1
+
 # Prevent shop from attempting to generate cards from unavailable pools
 [[patches]]
 [patches.pattern]

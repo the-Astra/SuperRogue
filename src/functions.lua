@@ -100,10 +100,10 @@ end
 
 --Helper function to check if an object's mod is active (makes conditionals more concise)
 function SuperRogue.is_object_mod_active(obj_prototype, args)
-    if obj_prototype.original_mod then
+    if obj_prototype.original_mod and G.STAGE == G.STAGES.RUN then
         return G.GAME.sr_active_mod_pool[obj_prototype.original_mod.id]
     else
-        if args and args.type then
+        if args and args.type and G.STAGE == G.STAGES.RUN then
             if args.type == 'Joker' and G.GAME.sr_vanilla_blacklist.jokers then
                 return false
             end
@@ -177,6 +177,13 @@ function SuperRogue.does_mod_have_content(id)
 
     for _, v in pairs(G.P_BLINDS) do
         if v.mod and v.mod.id == id and not v.no_collection then
+            return true
+        end
+    end
+
+    for i, v in ipairs(SMODS.Sticker.obj_buffer) do
+        local sticker = SMODS.Stickers[v]
+        if sticker.mod and sticker.mod.id == id and not sticker.no_collection then
             return true
         end
     end

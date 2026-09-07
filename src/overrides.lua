@@ -272,3 +272,10 @@ G.FUNCS.exit_overlay_menu_SuperRogue = function()
         SMODS.LAST_SELECTED_MOD_TAB = nil
     end
 end
+
+-- Handle stickers
+local smods_sticker_ref = SMODS.Sticker.should_apply
+SMODS.Sticker.should_apply = function(self, card, center, area, bypass_roll)
+    if not SuperRogue.is_object_mod_active(self) then return false end
+    return smods_sticker_ref(self, card, center, area, bypass_roll)
+end
