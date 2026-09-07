@@ -246,3 +246,15 @@ function G.FUNCS.use_card(e, mute, nosave)
         gfuc(e, mute, nosave)
     end
 end
+
+-- Open mod menu on right click
+local controller_queue_R_cursor_press_ref = Controller.queue_R_cursor_press
+function Controller:queue_R_cursor_press(x, y)
+    controller_queue_R_cursor_press_ref(self, x, y)
+    local press_node = self.hovering.target or self.focused.target
+    if press_node and press_node:is(Card) and press_node.ability.extra and press_node.ability.extra.mod_id then
+        play_sound('button', 1, 0.3)
+        SMODS.LAST_SELECTED_MOD_TAB = nil
+        G.FUNCS['openModUI_' .. press_node.ability.extra.mod_id]()
+    end
+end
