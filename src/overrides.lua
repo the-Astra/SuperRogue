@@ -254,7 +254,21 @@ function Controller:queue_R_cursor_press(x, y)
     local press_node = self.hovering.target or self.focused.target
     if press_node and press_node:is(Card) and press_node.ability.extra and press_node.ability.extra.mod_id then
         play_sound('button', 1, 0.3)
+        SuperRogue.last_selected_tab = SMODS.LAST_SELECTED_MOD_TAB
         SMODS.LAST_SELECTED_MOD_TAB = nil
         G.FUNCS['openModUI_' .. press_node.ability.extra.mod_id]()
+        G.OVERLAY_MENU:get_UIE_by_ID("overlay_menu_back_button").config.button = "exit_overlay_menu_SuperRogue"
+    end
+end
+
+G.FUNCS.exit_overlay_menu_SuperRogue = function()
+    if SuperRogue.last_selected_tab then
+        SMODS.LAST_SELECTED_MOD_TAB = SuperRogue.last_selected_tab
+        G.FUNCS['openModUI_SuperRogue']()
+        SuperRogue.last_selected_tab = nil
+    else
+        G.ACTIVE_MOD_UI = nil
+        G.FUNCS.exit_overlay_menu()
+        SMODS.LAST_SELECTED_MOD_TAB = nil
     end
 end
