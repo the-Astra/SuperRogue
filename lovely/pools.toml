@@ -58,7 +58,7 @@ else
 position = 'before'
 payload = '''
 elseif not SuperRogue.is_object_mod_active(v, {type = 'Booster'}) then
-    v.key == 'UNAVAILABLE
+    v.key = 'UNAVAILABLE'
 end
 '''
 match_indent = true
