@@ -48,6 +48,22 @@ end
 match_indent = true
 times = 1
 
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+else
+    all_unavailable = false
+'''
+position = 'before'
+payload = '''
+elseif not SuperRogue.is_object_mod_active(v, {type = 'Booster'}) then
+    v.key == 'UNAVAILABLE
+end
+'''
+match_indent = true
+times = 1
+
 # Prevent shop from attempting to generate cards from unavailable pools
 [[patches]]
 [patches.pattern]
