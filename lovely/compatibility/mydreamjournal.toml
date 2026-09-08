@@ -1,0 +1,19 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 999
+
+[[patches]] # MyDreamJournal doesn't do create_card hook stuff when not in run
+[patches.pattern]
+target = '''=[SMODS MyDreamJournal "items/hooks.lua"]'''
+pattern = '''
+local card = create_card_hook(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, ...)
+if not card then
+    return
+end
+'''
+position = 'after'
+payload = '''
+if G.STAGE ~= G.STAGES.RUN then return card end
+'''
+match_indent = true
