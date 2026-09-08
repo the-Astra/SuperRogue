@@ -126,18 +126,33 @@ end
 match_indent = true
 times = 1
 
-# [[patches]] # Will probably need this eventually
-# [patches.pattern]
-# target = "=[SMODS _ \"src/utils/weights.lua\"]"
-# pattern = '''
-# total_rate = total_rate + G.GAME[type:lower()..'_rate']
-# weighted_table[#weighted_table + 1] = {type = type, rate = G.GAME[type:lower()..'_rate'], mod_weight = total_rate}
-# '''
-# position = 'at'
-# payload = '''
-# if SuperRogue.is_pool_available(type) then
-#     total_rate = total_rate + G.GAME[type:lower()..'_rate']
-#     weighted_table[#weighted_table + 1] = {type = type, rate = G.GAME[type:lower()..'_rate'], mod_weight = total_rate}
-# end
-# '''
-# match_indent = true
+[[patches]]
+[patches.pattern]
+target = "=[SMODS _ \"src/utils/weights.lua\"]"
+pattern = '''
+for _,v in ipairs(SMODS.ConsumableType.obj_buffer) do
+    args.types[#args.types + 1] = v
+end
+'''
+position = 'at'
+payload = '''
+for _,v in ipairs(SMODS.ConsumableType.obj_buffer) do
+    if SuperRogue.is_pool_available(v) then
+        args.types[#args.types + 1] = v
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "=[SMODS _ \"src/utils/weights.lua\"]"
+pattern = '''
+if args.types and not args.types[v.set] then add = nil end
+'''
+position = 'after'
+payload = '''
+
+if not SuperRogue.is_pool_available(v.set) then add = nil end
+'''
+match_indent = true
