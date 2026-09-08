@@ -279,3 +279,16 @@ SMODS.Sticker.should_apply = function(self, card, center, area, bypass_roll)
     if not SuperRogue.is_object_mod_active(self) then return false end
     return smods_sticker_ref(self, card, center, area, bypass_roll)
 end
+
+
+--#region Compat
+
+if Giga then
+    local giga_astra_roll_ref = Giga.astral_roll
+    function Giga.astral_roll()
+        if not G.GAME.sr_active_mod_pool['GIGA'] then return 0 end
+        return giga_astra_roll_ref()
+    end
+end
+
+--#endregion
