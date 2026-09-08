@@ -286,7 +286,7 @@ end
 if Giga then
     local giga_astra_roll_ref = Giga.astral_roll
     function Giga.astral_roll()
-        if not G.GAME.sr_active_mod_pool['GIGA'] then return 0 end
+        if not G.GAME.sr_active_mod_pool['GIGA'] then return false end
         return giga_astra_roll_ref()
     end
 end
