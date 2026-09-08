@@ -1,0 +1,17 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 999
+
+[[patches]] # Bakery blind credits only affect Bakery blinds
+[patches.pattern]
+target = "=[SMODS Bakery \"src/util.lua\"]"
+pattern = '''
+local txt = ret.nodes[2].nodes[1].nodes[4]
+'''
+position = 'before'
+payload = '''
+if not blind.mod or blind.mod.id ~= 'Bakery' then return ret end
+'''
+match_indent = true
+times = 1
