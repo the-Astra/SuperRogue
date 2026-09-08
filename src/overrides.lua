@@ -4,22 +4,26 @@ function get_current_pool(_type, _rarity, _legendary, _append)
     local _pool, _pool_key = gcp(_type, _rarity, _legendary, _append)
     if G.STAGE == G.STAGES.RUN then
         local _pool_size = 0
+        local pool_copy = SMODS.shallow_copy(_pool)
 
-        for i = 1, #_pool do
-            if _pool[i] ~= 'UNAVAILABLE' then
-                local key = _pool[i]
+        for i = 1, #pool_copy do
+            if pool_copy[i] ~= 'UNAVAILABLE' then
+                local key = pool_copy[i]
 
                 if G.P_CENTERS[key] and not SuperRogue.is_object_mod_active(G.P_CENTERS[key], {type = _type}) then
-                    _pool[i] = 'UNAVAILABLE'
+                    pool_copy[i] = 'UNAVAILABLE'
                 elseif G.P_SEALS[key] and not SuperRogue.is_object_mod_active(G.P_SEALS[key], {type = _type}) then
-                    _pool[i] = 'UNAVAILABLE'
+                    pool_copy[i] = 'UNAVAILABLE'
                 elseif G.P_TAGS[key] and not SuperRogue.is_object_mod_active(G.P_TAGS[key], {type = _type}) then
-                    _pool[i] = 'UNAVAILABLE'
+                    pool_copy[i] = 'UNAVAILABLE'
                 else
+                    pool_copy[i] = key
                     _pool_size = _pool_size + 1
                 end
             end
         end
+
+        _pool = pool_copy
 
         --if pool is empty
         if _pool_size == 0 then

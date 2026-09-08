@@ -18,7 +18,7 @@ local original_pool = eligible_bosses
 local added_via_check = false
 for k, v in pairs(eligible_bosses) do
     if G.P_BLINDS[k] then
-        if not SuperRogue.is_object_mod_active(G.P_BLINDS[k], {type = 'Boss'}) then 
+        if not SuperRogue.is_object_mod_active(G.P_BLINDS[k], {type = 'Blind'}) then 
             eligible_bosses[k] = nil
         else
             added_via_check = true
@@ -125,3 +125,19 @@ end
 '''
 match_indent = true
 times = 1
+
+# [[patches]] # Will probably need this eventually
+# [patches.pattern]
+# target = "=[SMODS _ \"src/utils/weights.lua\"]"
+# pattern = '''
+# total_rate = total_rate + G.GAME[type:lower()..'_rate']
+# weighted_table[#weighted_table + 1] = {type = type, rate = G.GAME[type:lower()..'_rate'], mod_weight = total_rate}
+# '''
+# position = 'at'
+# payload = '''
+# if SuperRogue.is_pool_available(type) then
+#     total_rate = total_rate + G.GAME[type:lower()..'_rate']
+#     weighted_table[#weighted_table + 1] = {type = type, rate = G.GAME[type:lower()..'_rate'], mod_weight = total_rate}
+# end
+# '''
+# match_indent = true
