@@ -1,0 +1,37 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 999
+
+[[patches]] # Small and Big Blind pool manipulation
+[patches.pattern]
+target = '''=[SMODS ortalab "util/functions.lua"]'''
+pattern = '''
+for k, v in pairs(G.GAME.banned_keys) do
+    if eligible_bosses[k] then eligible_bosses[k] = nil end
+end
+'''
+position = 'after'
+payload = '''
+for k, v in pairs(eligible_bosses) do
+    if G.P_BLINDS[k] and not SuperRogue.is_object_mod_active(G.P_BLINDS[k], {type = 'Boss'}) then eligible_bosses[k] = nil end
+end
+if not next(eligible_bosses) then
+    eligible_bosses['bl_manacle'] = true
+end
+'''
+match_indent = true
+times = 2
+
+[[patches]] # Mythos shop slot compat
+[patches.pattern]
+target = 'game.lua'
+pattern = '''
+elseif G.GAME.ortalab.vouchers.mythos_shop_slot then
+'''
+position = 'at'
+payload = '''
+elseif G.GAME.ortalab.vouchers.mythos_shop_slot and G.GAME.sr_active_mod_pool['ortalab'] then
+'''
+match_indent = true
+times = 1
