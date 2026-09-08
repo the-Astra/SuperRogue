@@ -128,7 +128,10 @@ function SuperRogue.is_object_mod_active(obj_prototype, args)
                     return SuperRogue.is_pool_available('Spectral')
                 elseif obj_prototype.kind == 'Buffoon' then
                     return SuperRogue.is_pool_available('Joker')
+                elseif obj_prototype.kind == 'Standard' then
+                    return true
                 end
+                --print('No booster pools available')
                 return false
             end
             if args.type == 'Enhanced' and G.GAME.sr_vanilla_blacklist.enhancements then

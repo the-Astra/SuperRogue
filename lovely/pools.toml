@@ -42,7 +42,10 @@ if add and not G.GAME.banned_keys[v.key] then cume = cume + (v.current_weight or
 position = 'before'
 payload = '''
 if add then
-    add = SuperRogue.is_object_mod_active(v, {type = 'Booster'})
+    if not SuperRogue.is_object_mod_active(v, {type = 'Booster'}) then 
+        --print('Rejected booster ' .. v.key)
+        add = false
+    end
 end
 '''
 match_indent = true
@@ -58,6 +61,7 @@ else
 position = 'before'
 payload = '''
 elseif not SuperRogue.is_object_mod_active(v, {type = 'Booster'}) then
+    --print('Rejected booster ' .. v.key)
     v.key = 'UNAVAILABLE'
 '''
 match_indent = true
