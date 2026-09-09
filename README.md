@@ -8,5 +8,7 @@ The configuration options are as follows:
 - "Blacklist": As the name suggest, this menu will allow you to blacklist certain mods from being activated. It is suggested to add any non-content mod to this
 - "Starting Mods": Mods selected through this menu will be activated from the start automatically
 
+You may also right-click any mod object to open up its respective Mod's menu for easier access to the content each mod adds!
+
 This was an awesome little project to work on, so hopefully you enjoy this new way of playing Balatro! 
 Special thanks to MurphyOBV for the inspiration of this mod. If you're reading this I hope you get some fun out of it too!
