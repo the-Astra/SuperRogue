@@ -148,6 +148,22 @@ match_indent = true
 [patches.pattern]
 target = "=[SMODS _ \"src/utils/weights.lua\"]"
 pattern = '''
+for i, v in ipairs(args.types) do
+    args.types[v] = true
+end
+'''
+position = 'at'
+payload = '''
+for i, v in ipairs(args.types) do
+    args.types[v] = SuperRogue.is_pool_available(v)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "=[SMODS _ \"src/utils/weights.lua\"]"
+pattern = '''
 if args.types and not args.types[v.set] then add = nil end
 '''
 position = 'after'

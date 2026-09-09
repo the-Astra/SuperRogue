@@ -90,7 +90,7 @@ function SuperRogue.is_pool_available(_type)
     local available_type = false
     local _type_pool = get_current_pool(_type)
     for i = 1, #_type_pool do
-        if _type_pool[i] ~= 'UNAVAILABLE' then
+        if _type_pool[i] ~= 'UNAVAILABLE' and (_type_pool[i] ~= 'j_joker' or _type == 'Joker') then
             available_type = true
             break
         end
