@@ -284,6 +284,47 @@ SMODS.Sticker.should_apply = function(self, card, center, area, bypass_roll)
     return smods_sticker_ref(self, card, center, area, bypass_roll)
 end
 
+local main_menu_ref = Game.main_menu
+function Game:main_menu(change_context)
+	local ret = main_menu_ref(self, change_context)
+
+    if not SuperRogue_config.first_startup then -- Attach to config instead of profile because per-profile feels less right
+		SuperRogue_config.first_startup = true
+		
+		local nodes = {}
+		nodes[#nodes+1] = {}
+		local loc_vars = {
+            background_colour = G.C.CLEAR,
+            text_colour = G.C.WHITE,
+            scale = 1.4,
+			vars = {
+				elements = {
+					SMODS.create_sprite(0, 0, 1, 1 * (G.ASSET_ATLAS["sr_modicon"].py / G.ASSET_ATLAS["sr_modicon"].px), "sr_modicon", {x = 0, y = 0}),
+				}
+			}
+		}
+
+		localize { type = 'descriptions', key = 'sr_recommendation', set = 'Other', nodes = nodes[#nodes], vars = loc_vars.vars, text_colour = loc_vars.text_colour, shadow = loc_vars.shadow  }
+		nodes[#nodes] = desc_from_rows(nodes[#nodes])
+        nodes[#nodes].config.colour = loc_vars.background_colour or nodes[#nodes].config.colour
+
+		G.FUNCS.overlay_menu {
+			definition = {
+				n = G.UIT.ROOT, config = {align = "cm", minw = G.ROOM.T.w * 5, minh = G.ROOM.T.h * 5, padding = 0.1, r = 0.1, colour = { G.C.GREY[1], G.C.GREY[2], G.C.GREY[3], 0.7 }}, nodes = {
+				{n = G.UIT.R, config = { r = 0.1, colour = G.C.JOKER_GREY, padding = 0.05, align = "cm" }, nodes = {
+					{n = G.UIT.C, config = { colour = G.C.L_BLACK, r = 0.1, padding = 0.2, align = "cm" }, nodes = {
+						{n = G.UIT.R, config = { align = "cm", padding = 0.1 }, nodes = nodes },
+						{n = G.UIT.R, config = {id = "overlay_menu_back_button", align = "cm", minw = 2.5, padding = 0.1, r = 0.1, hover = true, colour = G.C.ORANGE, button = "exit_overlay_menu", shadow = true, focus_args = { nav = "wide", button = "b" }}, nodes = {
+							{n = G.UIT.R, config = { align = "cm", padding = 0, no_fill = true }, nodes = {
+								{n = G.UIT.T, config = {text = localize("k_sr_okay"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true}},
+							}},
+						}},
+					}},
+				}},
+			}}
+		}
+	end
+end
 
 --#region Compat
 
