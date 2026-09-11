@@ -37,7 +37,8 @@ if G.SPLASH_SUPERROGUE_LOGO then
     love.graphics.push()
     G.SPLASH_SUPERROGUE_LOGO:translate_container()
 
-    G.SPLASH_SUPERROGUE_LOGO:draw_shader('dissolve', nil, nil, nil, G.SPLASH_SUPERROGUE_LOGO)
+    G.SPLASH_SUPERROGUE_LOGO:draw_shader('dissolve', 0, nil, nil, G.SPLASH_SUPERROGUE_LOGO, not G.SPLASH_SUPERROGUE_LOGO.states.drag.is and 0.1 or nil, nil, nil, 0.1 + 0.03*math.sin(1.8), nil, 0.6)
+    G.SPLASH_SUPERROGUE_LOGO:draw_shader('dissolve', nil, nil, nil, G.SPLASH_SUPERROGUE_LOGO, not G.SPLASH_SUPERROGUE_LOGO.states.drag.is and 0.1 or nil)
 
     add_to_drawhash(G.SPLASH_SUPERROGUE_LOGO)
 
