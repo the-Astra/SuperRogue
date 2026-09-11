@@ -269,7 +269,7 @@ function Controller:queue_R_cursor_press(x, y)
     if press_node and press_node:is(Card) and press_node.ability.extra and press_node.ability.extra.mod_id then
         play_sound('button', 1, 0.3)
         SuperRogue.last_selected_tab = SMODS.LAST_SELECTED_MOD_TAB
-        SMODS.LAST_SELECTED_MOD_TAB = nil
+        SMODS.LAST_SELECTED_MOD_TAB = "additions"
         G.FUNCS['openModUI_' .. press_node.ability.extra.mod_id]()
         G.OVERLAY_MENU:get_UIE_by_ID("overlay_menu_back_button").config.button = "exit_overlay_menu_SuperRogue"
     end
