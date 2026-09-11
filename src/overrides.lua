@@ -2,7 +2,7 @@
 local gcp = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append)
     local _pool, _pool_key = gcp(_type, _rarity, _legendary, _append)
-    if G.STAGE == G.STAGES.RUN then
+    if G.STAGE == G.STAGES.RUN and SuperRogue_config.disabled then
         local _pool_size = 0
         local pool_copy = SMODS.shallow_copy(_pool)
 
@@ -62,7 +62,7 @@ end
 local add_to_pool_ref = SMODS.add_to_pool
 function SMODS.add_to_pool(prototype_obj, args)
     local ret = add_to_pool_ref(prototype_obj, args)
-    if ret and not SuperRogue.is_object_mod_active(prototype_obj, {type = prototype_obj.set}) then
+    if ret and not SuperRogue.is_object_mod_active(prototype_obj, {type = prototype_obj.set}) and SuperRogue_config.disabled then
         ret = false
     end
     return ret
@@ -72,6 +72,8 @@ end
 local igo = Game.init_game_object
 Game.init_game_object = function(self)
     local ret = igo(self)
+
+    if SuperRogue_config.disabled then return ret end
 
     SuperRogue.content_mods = {}
 
@@ -133,6 +135,8 @@ local atr = Back.apply_to_run
 Back.apply_to_run = function(self)
     atr(self)
 
+    if SuperRogue_config.disabled then return end
+
     G.E_MANAGER:add_event(Event({
         trigger = 'after',
         func = function()
@@ -185,6 +189,7 @@ end
 local update_shopref = Game.update_shop
 function Game.update_shop(self, dt)
     update_shopref(self, dt)
+    if SuperRogue_config.disabled then return end
     if (G.GAME.sr_iteration_steps >= G.GAME.sr_activation_threashold) and G.GAME.sr_activation_mode == 2 then
         G.GAME.sr_iteration_steps = 0
 

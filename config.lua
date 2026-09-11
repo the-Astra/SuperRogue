@@ -9,6 +9,7 @@ return {
     activation_blacklist = {},
     pack_size = 2,
     pack_choices = 1,
+    disabled = false,
     vanilla_blacklist =  {
         jokers = false,
         vouchers = false,

@@ -454,6 +454,28 @@ SuperRogue.config_tab = function()
                 }
             },
 
+            -- Disable Mod toggle
+            {
+                n = G.UIT.R,
+                config = { align = "cm", padding = 0 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = { align = "cl", padding = 0.05 },
+                        nodes = {
+                            create_toggle { col = true, label = "", scale = 1, w = 0, shadow = true, ref_table = SuperRogue_config, ref_value = "disabled" },
+                        }
+                    },
+                    {
+                        n = G.UIT.C,
+                        config = { align = "c", padding = 0 },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = localize('b_sr_disable_mod'), scale = 0.45, colour = G.C.UI.TEXT_LIGHT } },
+                        }
+                    },
+                }
+            },
+
             { n = G.UIT.R, config = { align = "cl", padding = 0, minh = 0.1 }, nodes = {} },
 
             {

@@ -50,6 +50,7 @@ return {
             b_sr_pack_choices = 'Pack Choices',
             b_sr_rand_starting = 'Random Starting Mods',
             b_sr_vanilla_obj_bl = 'Vanilla Object Blacklist',
+            b_sr_disable_mod = 'Disable SuperRogue',
 
             k_mod_consumable = 'Mod',
             k_sr_activation = ' has been activated!',

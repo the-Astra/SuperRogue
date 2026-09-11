@@ -31,7 +31,7 @@ elseif G.GAME.ortalab.vouchers.mythos_shop_slot then
 '''
 position = 'at'
 payload = '''
-elseif G.GAME.ortalab.vouchers.mythos_shop_slot and G.GAME.sr_active_mod_pool['ortalab'] then
+elseif G.GAME.ortalab.vouchers.mythos_shop_slot and (SuperRogue_config.disabled or G.GAME.sr_active_mod_pool['ortalab']) then
 '''
 match_indent = true
 times = 1

@@ -1,5 +1,6 @@
 -- Global calculate for activating mods whenever a threashold is met
 SuperRogue.calculate = function(self, context)
+    if SuperRogue_config.disabled then return end
     if G.GAME.sr_trigger_type == 1 and context.ante_change and context.ante_end
         or G.GAME.sr_trigger_type == 2 and context.end_of_round and not context.repetition and not context.individual then
         G.GAME.sr_iteration_steps = G.GAME.sr_iteration_steps + 1
@@ -87,6 +88,7 @@ end
 
 --Helper function to check if an object pool has any available objects
 function SuperRogue.is_pool_available(_type)
+    if SuperRogue_config.disabled then return true end
     local available_type = false
     local _type_pool = get_current_pool(_type)
     for i = 1, #_type_pool do
@@ -100,6 +102,7 @@ end
 
 --Helper function to check if an object's mod is active (makes conditionals more concise)
 function SuperRogue.is_object_mod_active(obj_prototype, args)
+    if SuperRogue_config.disabled then return true end
     if obj_prototype.original_mod and G.STAGE == G.STAGES.RUN then
         return G.GAME.sr_active_mod_pool[obj_prototype.original_mod.id]
     else

@@ -14,19 +14,21 @@ end
 '''
 position = 'after'
 payload = '''
-local original_pool = eligible_bosses
-local added_via_check = false
-for k, v in pairs(eligible_bosses) do
-    if G.P_BLINDS[k] then
-        if not SuperRogue.is_object_mod_active(G.P_BLINDS[k], {type = 'Blind'}) then 
-            eligible_bosses[k] = nil
-        else
-            added_via_check = true
+if not SuperRogue_config.disabled then
+    local original_pool = eligible_bosses
+    local added_via_check = false
+    for k, v in pairs(eligible_bosses) do
+        if G.P_BLINDS[k] then
+            if not SuperRogue.is_object_mod_active(G.P_BLINDS[k], {type = 'Blind'}) then 
+                eligible_bosses[k] = nil
+            else
+                added_via_check = true
+            end
         end
     end
-end
-if not added_via_check then
-    eligible_bosses = original_pool
+    if not added_via_check then
+        eligible_bosses = original_pool
+    end
 end
 '''
 match_indent = true
@@ -89,7 +91,7 @@ total_rate = total_rate + G.GAME[v:lower()..'_rate']
 '''
 position = 'at'
 payload = '''
-if SuperRogue.is_pool_available(v) then
+if SuperRogue_config.disabled or SuperRogue.is_pool_available(v) then
     total_rate = total_rate + G.GAME[v:lower()..'_rate']
 end
 '''
