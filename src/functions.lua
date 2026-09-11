@@ -159,7 +159,8 @@ end
 function SuperRogue.does_mod_have_content(id)
     local pool_blacklist = {
         ['Sleeve'] = true,
-        ['Back'] = true
+        ['Back'] = true,
+        ['Partner'] = true,
     }
 
     for pool, _ in pairs(G.P_CENTER_POOLS) do
