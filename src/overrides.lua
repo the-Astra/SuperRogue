@@ -58,6 +58,16 @@ function get_current_pool(_type, _rarity, _legendary, _append)
     return _pool, _pool_key
 end
 
+-- Use this in tandem with gcp
+local add_to_pool_ref = SMODS.add_to_pool
+function SMODS.add_to_pool(prototype_obj, args)
+    local ret = add_to_pool_ref(prototype_obj, args)
+    if ret and not SuperRogue.is_object_mod_active(prototype_obj, {type = prototype_obj.set}) then
+        ret = false
+    end
+    return ret
+end
+
 -- Init SuperRogue game objects
 local igo = Game.init_game_object
 Game.init_game_object = function(self)
