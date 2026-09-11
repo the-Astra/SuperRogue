@@ -10,11 +10,11 @@ function get_current_pool(_type, _rarity, _legendary, _append)
             if pool_copy[i] ~= 'UNAVAILABLE' then
                 local key = pool_copy[i]
 
-                if G.P_CENTERS[key] and not SuperRogue.is_object_mod_active(G.P_CENTERS[key], {type = _type}) then
+                if G.P_CENTERS[key] and not SuperRogue.is_object_mod_active(G.P_CENTERS[key], { type = _type }) then
                     pool_copy[i] = 'UNAVAILABLE'
-                elseif G.P_SEALS[key] and not SuperRogue.is_object_mod_active(G.P_SEALS[key], {type = _type}) then
+                elseif G.P_SEALS[key] and not SuperRogue.is_object_mod_active(G.P_SEALS[key], { type = _type }) then
                     pool_copy[i] = 'UNAVAILABLE'
-                elseif G.P_TAGS[key] and not SuperRogue.is_object_mod_active(G.P_TAGS[key], {type = _type}) then
+                elseif G.P_TAGS[key] and not SuperRogue.is_object_mod_active(G.P_TAGS[key], { type = _type }) then
                     pool_copy[i] = 'UNAVAILABLE'
                 else
                     pool_copy[i] = key
@@ -30,18 +30,28 @@ function get_current_pool(_type, _rarity, _legendary, _append)
             _pool = EMPTY(G.ARGS.TEMP_POOL)
             if SMODS.ObjectTypes[_type] and SMODS.ObjectTypes[_type].default and G.P_CENTERS[SMODS.ObjectTypes[_type].default] then
                 if SuperRogue.is_object_mod_active(SMODS.ObjectTypes[_type]) then
-                    _pool[#_pool+1] = SMODS.ObjectTypes[_type].default
+                    _pool[#_pool + 1] = SMODS.ObjectTypes[_type].default
                 end
-            elseif _type == 'Tarot' or _type == 'Tarot_Planet' then _pool[#_pool + 1] = "c_strength"
-            elseif _type == 'Planet' then _pool[#_pool + 1] = "c_pluto"
-            elseif _type == 'Spectral' then _pool[#_pool + 1] = "c_incantation"
-            elseif _type == 'Joker' then _pool[#_pool + 1] = "j_joker"
-            elseif _type == 'Demo' then _pool[#_pool + 1] = "j_joker"
-            elseif _type == 'Voucher' then _pool[#_pool + 1] = "v_blank"
-            elseif _type == 'Tag' then _pool[#_pool + 1] = "tag_handy"
-            elseif _type == 'Edition' then _pool[#_pool + 1] = "e_foil"
-            elseif _type == 'Seal' then _pool[#_pool + 1] = "Purple"
-            else _pool[#_pool + 1] = "j_joker"
+            elseif _type == 'Tarot' or _type == 'Tarot_Planet' then
+                _pool[#_pool + 1] = "c_strength"
+            elseif _type == 'Planet' then
+                _pool[#_pool + 1] = "c_pluto"
+            elseif _type == 'Spectral' then
+                _pool[#_pool + 1] = "c_incantation"
+            elseif _type == 'Joker' then
+                _pool[#_pool + 1] = "j_joker"
+            elseif _type == 'Demo' then
+                _pool[#_pool + 1] = "j_joker"
+            elseif _type == 'Voucher' then
+                _pool[#_pool + 1] = "v_blank"
+            elseif _type == 'Tag' then
+                _pool[#_pool + 1] = "tag_handy"
+            elseif _type == 'Edition' then
+                _pool[#_pool + 1] = "e_foil"
+            elseif _type == 'Seal' then
+                _pool[#_pool + 1] = "Purple"
+            else
+                _pool[#_pool + 1] = "j_joker"
             end
         end
     end
@@ -286,44 +296,105 @@ end
 
 local main_menu_ref = Game.main_menu
 function Game:main_menu(change_context)
-	local ret = main_menu_ref(self, change_context)
+    local ret = main_menu_ref(self, change_context)
+
+    local SC_scale = 1.2 * (G.debug_splash_size_toggle and 0.8 or 1)
+    G.SPLASH_SUPERROGUE_LOGO = Sprite(0, 0,
+        1 * SC_scale,
+        1 * SC_scale * (G.ASSET_ATLAS["sr_modicon"].py / G.ASSET_ATLAS["sr_modicon"].px),
+        G.ASSET_ATLAS["sr_modicon"], { x = 0, y = 0 }
+    )
+    G.SPLASH_SUPERROGUE_LOGO:set_alignment({
+        major = G.SPLASH_LOGO,
+        type = 'tr',
+        bond = 'Strong',
+        offset = { x = -0.9, y = 3 }
+    })
+    G.SPLASH_SUPERROGUE_LOGO:define_draw_steps({ {
+        shader = 'dissolve',
+    } })
+
+    -- Define badge properties
+    G.SPLASH_SUPERROGUE_LOGO.tilt_var = { mx = 0, my = 0, dx = 0, dy = 0, amt = 0 }
+
+    G.SPLASH_SUPERROGUE_LOGO.dissolve_colours = { HEX("ffad66"), HEX("d90e00") }
+    G.SPLASH_SUPERROGUE_LOGO.dissolve = 1
+
+    G.SPLASH_SUPERROGUE_LOGO.states.collide.can = true
+
+    -- Define node functions for SuperRogue badge
+    function G.SPLASH_SUPERROGUE_LOGO:click()
+        play_sound('button', 1, 0.3)
+        SMODS.LAST_SELECTED_MOD_TAB = nil
+        G.FUNCS['openModUI_SuperRogue']()
+        G.OVERLAY_MENU:get_UIE_by_ID("overlay_menu_back_button").config.button = "exit_overlay_menu_sr_menu"
+    end
+
+    G.FUNCS.exit_overlay_menu_sr_menu = function()
+        G.ACTIVE_MOD_UI = nil
+        G.FUNCS.exit_overlay_menu()
+    end
+
+    function G.SPLASH_SUPERROGUE_LOGO:hover()
+        G.SPLASH_SUPERROGUE_LOGO:juice_up(0.05, 0.03)
+        play_sound('paper1', math.random() * 0.2 + 0.9, 0.35)
+        Node.hover(self)
+    end
+
+    function G.SPLASH_SUPERROGUE_LOGO:stop_hover() Node.stop_hover(self) end
+
+    --Badge animation
+    G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = change_context == 'splash' and 1.8 or change_context == 'game' and 2 or 1,
+        blockable = false,
+        blocking = false,
+        func = (function()
+            ease_value(G.SPLASH_SUPERROGUE_LOGO, 'dissolve', -1, nil, nil, nil, change_context == 'splash' and 2.3 or 0.9)
+            G.VIBRATION = G.VIBRATION + 1.5
+            return true
+        end)
+    }))
 
     if not SuperRogue_config.first_startup then -- Attach to config instead of profile because per-profile feels less right
-		SuperRogue_config.first_startup = true
-		
-		local nodes = {}
-		nodes[#nodes+1] = {}
-		local loc_vars = {
+        SuperRogue_config.first_startup = true
+
+        local nodes = {}
+        nodes[#nodes + 1] = {}
+        local loc_vars = {
             background_colour = G.C.CLEAR,
             text_colour = G.C.WHITE,
             scale = 1.4,
-			vars = {
-				elements = {
-					SMODS.create_sprite(0, 0, 1, 1 * (G.ASSET_ATLAS["sr_modicon"].py / G.ASSET_ATLAS["sr_modicon"].px), "sr_modicon", {x = 0, y = 0}),
-				}
-			}
-		}
+            vars = {
+                elements = {
+                    SMODS.create_sprite(0, 0, 1, 1 * (G.ASSET_ATLAS["sr_modicon"].py / G.ASSET_ATLAS["sr_modicon"].px),
+                        "sr_modicon", { x = 0, y = 0 }),
+                }
+            }
+        }
 
-		localize { type = 'descriptions', key = 'sr_recommendation', set = 'Other', nodes = nodes[#nodes], vars = loc_vars.vars, text_colour = loc_vars.text_colour, shadow = loc_vars.shadow  }
-		nodes[#nodes] = desc_from_rows(nodes[#nodes])
+        localize { type = 'descriptions', key = 'sr_recommendation', set = 'Other', nodes = nodes[#nodes], vars = loc_vars.vars, text_colour = loc_vars.text_colour, shadow = loc_vars.shadow }
+        nodes[#nodes] = desc_from_rows(nodes[#nodes])
         nodes[#nodes].config.colour = loc_vars.background_colour or nodes[#nodes].config.colour
 
-		G.FUNCS.overlay_menu {
-			definition = {
-				n = G.UIT.ROOT, config = {align = "cm", minw = G.ROOM.T.w * 5, minh = G.ROOM.T.h * 5, padding = 0.1, r = 0.1, colour = { G.C.GREY[1], G.C.GREY[2], G.C.GREY[3], 0.7 }}, nodes = {
-				{n = G.UIT.R, config = { r = 0.1, colour = G.C.JOKER_GREY, padding = 0.05, align = "cm" }, nodes = {
-					{n = G.UIT.C, config = { colour = G.C.L_BLACK, r = 0.1, padding = 0.2, align = "cm" }, nodes = {
-						{n = G.UIT.R, config = { align = "cm", padding = 0.1 }, nodes = nodes },
-						{n = G.UIT.R, config = {id = "overlay_menu_back_button", align = "cm", minw = 2.5, padding = 0.1, r = 0.1, hover = true, colour = G.C.ORANGE, button = "exit_overlay_menu", shadow = true, focus_args = { nav = "wide", button = "b" }}, nodes = {
-							{n = G.UIT.R, config = { align = "cm", padding = 0, no_fill = true }, nodes = {
-								{n = G.UIT.T, config = {text = localize("k_sr_okay"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true}},
-							}},
-						}},
-					}},
-				}},
-			}}
-		}
-	end
+        G.FUNCS.overlay_menu {
+            definition = {
+                n = G.UIT.ROOT, config = { align = "cm", minw = G.ROOM.T.w * 5, minh = G.ROOM.T.h * 5, padding = 0.1, r = 0.1, colour = { G.C.GREY[1], G.C.GREY[2], G.C.GREY[3], 0.7 } }, nodes = {
+                { n = G.UIT.R, config = { r = 0.1, colour = G.C.JOKER_GREY, padding = 0.05, align = "cm" }, nodes = {
+                    { n = G.UIT.C, config = { colour = G.C.L_BLACK, r = 0.1, padding = 0.2, align = "cm" }, nodes = {
+                        { n = G.UIT.R, config = { align = "cm", padding = 0.1 }, nodes = nodes },
+                        { n = G.UIT.R, config = { id = "overlay_menu_back_button", align = "cm", minw = 2.5, padding = 0.1, r = 0.1, hover = true, colour = G.C.ORANGE, button = "exit_overlay_menu", shadow = true, focus_args = { nav = "wide", button = "b" } }, nodes = {
+                            { n = G.UIT.R, config = { align = "cm", padding = 0, no_fill = true }, nodes = {
+                                { n = G.UIT.T, config = { text = localize("k_sr_okay"), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true } },
+                            } },
+                        } },
+                    } },
+                } },
+            } }
+        }
+    end
+
+    return ret
 end
 
 --#region Compat

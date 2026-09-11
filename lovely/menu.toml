@@ -1,0 +1,48 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 1
+
+# SuperRogue logo menu draw stuff
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+if self.SPLASH_LOGO then self.SPLASH_LOGO:remove(); self.SPLASH_LOGO = nil end
+'''
+position = "after"
+payload = '''
+if self.SPLASH_SUPERROGUE_LOGO then self.SPLASH_SUPERROGUE_LOGO:remove(); self.SPLASH_SUPERROGUE_LOGO = nil end -- Added by SuperRogue
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+if G.SPLASH_LOGO then
+    love.graphics.push()
+    G.SPLASH_LOGO:translate_container()
+    G.SPLASH_LOGO:draw()
+    love.graphics.pop()
+end
+'''
+position = "after"
+payload = '''
+
+-- Added by SuperRogue
+if G.SPLASH_SUPERROGUE_LOGO then
+    love.graphics.push()
+    G.SPLASH_SUPERROGUE_LOGO:translate_container()
+
+    G.SPLASH_SUPERROGUE_LOGO:draw_shader('dissolve', nil, nil, nil, G.SPLASH_SUPERROGUE_LOGO)
+
+    add_to_drawhash(G.SPLASH_SUPERROGUE_LOGO)
+
+    love.graphics.pop()
+end
+'''
+match_indent = true
+times = 1
