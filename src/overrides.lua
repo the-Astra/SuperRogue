@@ -112,8 +112,8 @@ Game.init_game_object = function(self)
     ret.sr_boosters_in_shop = SuperRogue_config.boosters_in_shop
     ret.sr_vanilla_blacklist = SuperRogue_config.vanilla_blacklist
 
-    G.P_CENTERS['p_sr_mod_booster'].config.extra = SuperRogue_config.pack_size + 1 -- jank lol
-    G.P_CENTERS['p_sr_mod_booster'].config.choose = math.max(SuperRogue_config.pack_choices, SuperRogue_config.pack_size + 1) -- Prevent Choose value from being less than size
+    G.P_CENTERS['p_sr_mod_booster'].config.extra = math.max(SuperRogue_config.pack_choices, SuperRogue_config.pack_size + 1) -- jank lol
+    G.P_CENTERS['p_sr_mod_booster'].config.choose = SuperRogue_config.pack_choices
 
     return ret
 end
