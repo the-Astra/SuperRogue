@@ -11,7 +11,7 @@ if context and context.starting_shop then
 '''
 position = 'at'
 payload = '''
-if context and context.starting_shop and (SuperRogue_config.disabled or G.sr_active_mod_pool['GSCatan']) then
+if context and context.starting_shop and (SuperRogue_config.disabled or G.GAME.sr_active_mod_pool['GSCatan']) then
 '''
 match_indent = true
 times = 1

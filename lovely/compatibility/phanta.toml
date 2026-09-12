@@ -11,7 +11,7 @@ if context and context.starting_shop and Phanta.config["starter_pack_enabled"] a
 '''
 position = 'at'
 payload = '''
-if context and context.starting_shop and Phanta.config["starter_pack_enabled"] and not G.GAME.PhantaStarterPacks.purchased_this_ante and (SuperRogue_config.disabled or G.sr_active_mod_pool['GSPhanta']) then
+if context and context.starting_shop and Phanta.config["starter_pack_enabled"] and not G.GAME.PhantaStarterPacks.purchased_this_ante and (SuperRogue_config.disabled or G.GAME.sr_active_mod_pool['GSPhanta']) then
 '''
 match_indent = true
 times = 1
