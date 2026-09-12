@@ -1,0 +1,17 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 999
+
+[[patches]]
+[patches.pattern]
+target = "=[SMODS GSCatan \"items/Catan.lua\"]"
+pattern = '''
+if context and context.starting_shop then
+'''
+position = 'at'
+payload = '''
+if context and context.starting_shop and (SuperRogue_config.disabled or G.sr_active_mod_pool['GSCatan']) then
+'''
+match_indent = true
+times = 1

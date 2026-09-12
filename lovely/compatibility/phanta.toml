@@ -1,0 +1,17 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 999
+
+[[patches]]
+[patches.pattern]
+target = "=[SMODS GSPhanta \"items/StarterPacks.lua\"]"
+pattern = '''
+if context and context.starting_shop and Phanta.config["starter_pack_enabled"] and not G.GAME.PhantaStarterPacks.purchased_this_ante then
+'''
+position = 'at'
+payload = '''
+if context and context.starting_shop and Phanta.config["starter_pack_enabled"] and not G.GAME.PhantaStarterPacks.purchased_this_ante and (SuperRogue_config.disabled or G.sr_active_mod_pool['GSPhanta']) then
+'''
+match_indent = true
+times = 1
