@@ -2,7 +2,7 @@
 local gcp = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append)
     local _pool, _pool_key = gcp(_type, _rarity, _legendary, _append)
-    if G.STAGE == G.STAGES.RUN and SuperRogue_config.disabled then
+    if G.STAGE == G.STAGES.RUN and not SuperRogue_config.disabled then
         local _pool_size = 0
         local pool_copy = SMODS.shallow_copy(_pool)
 
@@ -62,7 +62,7 @@ end
 local add_to_pool_ref = SMODS.add_to_pool
 function SMODS.add_to_pool(prototype_obj, args)
     local ret = add_to_pool_ref(prototype_obj, args)
-    if ret and not SuperRogue.is_object_mod_active(prototype_obj, {type = prototype_obj.set}) and SuperRogue_config.disabled then
+    if ret and not SuperRogue.is_object_mod_active(prototype_obj, {type = prototype_obj.set}) and not SuperRogue_config.disabled then
         ret = false
     end
     return ret
